@@ -1,4 +1,3 @@
-// vite.config.js
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { fileURLToPath } from 'node:url'
@@ -8,10 +7,8 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname  = dirname(__filename)
 
 export default defineConfig({
-  base: '/',                   // custom domain = root
+  base: '/', // custom domain = root
   plugins: [react()],
-  resolve: {
-    alias: { '@': resolve(__dirname, './src') },
-  },
+  resolve: { alias: { '@': resolve(__dirname, './src') } },
   build: { outDir: 'dist', assetsDir: 'assets', emptyOutDir: true },
 })
