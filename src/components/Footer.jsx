@@ -23,11 +23,7 @@ const Footer = () => {
           {/* Logo and Contact */}
           <div className="space-y-6">
             <div className="flex items-center space-x-2">
-              <img 
-                src={logoPath} 
-                alt="Pathfindars Logo" 
-                className="w-8 h-8 rounded"
-              />
+              <img src={logoPath} alt="Pathfindars Logo" className="w-8 h-8 rounded" />
               <div>
                 <h3 className="text-lg font-bold text-gray-900">Pathfindars Group</h3>
                 <p className="text-xs text-gray-700">Venture. Finance. Overseas Markets.</p>
@@ -57,7 +53,7 @@ const Footer = () => {
                 <div className="flex items-center space-x-2">
                   <Phone className="w-5 h-5 text-gray-700" />
                   <div>
-                    <p className="text-gray-900">General Inquiries:</p>
+                    <p className="text-gray-900">General Enquiries:</p>
                     <a href="tel:+6597843884" className="text-gray-900 hover:underline">
                       +65 9784 3884
                     </a>
@@ -71,7 +67,7 @@ const Footer = () => {
           <div className="space-y-6">
             <h4 className="text-lg font-bold text-gray-900">Quick Links</h4>
             <div className="space-y-2">
-              <a href="#" className="block text-gray-900 hover:underline">Terms & Conditions</a>
+              <a href="#" className="block text-gray-900 hover:underline">Terms &amp; Conditions</a>
               <a href="#" className="block text-gray-900 hover:underline">Privacy Policy</a>
             </div>
           </div>
@@ -80,8 +76,7 @@ const Footer = () => {
           <div className="space-y-6">
             <h4 className="text-lg font-bold text-gray-900">Follow</h4>
             <p className="text-gray-900">Sign up to get the latest news on our product.</p>
-            
-            {/* Newsletter Signup */}
+
             <form onSubmit={handleSubscribe} className="space-y-3">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-1">
@@ -97,47 +92,28 @@ const Footer = () => {
                   required
                 />
               </div>
-              <Button 
-                type="submit"
-                className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2"
-              >
+              <Button type="submit" className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2">
                 Subscribe
               </Button>
-              {subscribed && (
-                <p className="text-green-700 text-sm">Thanks for subscribing!</p>
-              )}
+              {subscribed && <p className="text-green-700 text-sm">Thanks for subscribing!</p>}
             </form>
 
-            {/* Social Media Links */}
             <div className="flex space-x-4">
-              <a 
-                href="#" 
-                className="w-10 h-10 bg-blue-600 rounded flex items-center justify-center hover:bg-blue-700 transition-colors"
-                aria-label="LinkedIn"
-              >
+              <a href="#" className="w-10 h-10 bg-blue-600 rounded flex items-center justify-center hover:bg-blue-700 transition-colors" aria-label="LinkedIn">
                 <Linkedin className="w-5 h-5 text-white" />
               </a>
-              <a 
-                href="#" 
-                className="w-10 h-10 bg-red-600 rounded flex items-center justify-center hover:bg-red-700 transition-colors"
-                aria-label="YouTube"
-              >
+              <a href="#" className="w-10 h-10 bg-red-600 rounded flex items-center justify-center hover:bg-red-700 transition-colors" aria-label="YouTube">
                 <Youtube className="w-5 h-5 text-white" />
               </a>
-              <a 
-                href="#" 
-                className="w-10 h-10 bg-blue-800 rounded flex items-center justify-center hover:bg-blue-900 transition-colors"
-                aria-label="Facebook"
-              >
+              <a href="#" className="w-10 h-10 bg-blue-800 rounded flex items-center justify-center hover:bg-blue-900 transition-colors" aria-label="Facebook">
                 <Facebook className="w-5 h-5 text-white" />
               </a>
             </div>
           </div>
         </div>
 
-        {/* Copyright */}
         <div className="border-t border-gray-600 mt-12 pt-8">
-          <p className="text-center text-gray-900">© 2023 by Pathfindars Group</p>
+          <p className="text-center text-gray-900">© {new Date().getFullYear()} Pathfindars Group</p>
         </div>
       </div>
     </footer>
@@ -145,4 +121,3 @@ const Footer = () => {
 }
 
 export default Footer
-
