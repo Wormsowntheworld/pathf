@@ -1,20 +1,25 @@
+// vite.config.js (ESM-safe + custom domain)
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import path from 'path'
+import { fileURLToPath } from 'node:url'
+import { dirname, resolve } from 'node:path'
 
-// https://vite.dev/config/
+// Recreate __dirname in ESM
+const __filename = fileURLToPath(import.meta.url)
+const __dirname  = dirname(__filename)
+
 export default defineConfig({
-  plugins: [react(),tailwindcss()],
+  base: '/', // required for custom domain (pathfindars.com)
+  plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      '@': resolve(__dirname, './src'),
     },
   },
-  // For custom domain, use '/' as base
-  // For GitHub Pages with repo name, use '/repo-name/'
-  export default defineConfig({
-  base: '/',
-  plugins: [react()],
-
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    emptyOutDir: true,
+  },
 })
