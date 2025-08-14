@@ -1,29 +1,42 @@
-# .github/workflows/deploy.yml
 name: Deploy Vite site to GitHub Pages
+
 on:
   push:
     branches: [ main ]
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
 concurrency:
   group: pages
   cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # Node + pnpm
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run build
+          cache: 'pnpm'        # Works with pnpm-lock.yaml
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '10'        # Or omit to auto-read from package.json
+
+      # Install & build
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+
+      # Upload the built site
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
