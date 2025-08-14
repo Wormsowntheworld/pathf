@@ -13,9 +13,8 @@ export default defineConfig({
   },
   // For custom domain, use '/' as base
   // For GitHub Pages with repo name, use '/repo-name/'
-  base: process.env.CUSTOM_DOMAIN ? '/' : (process.env.NODE_ENV === 'production' ? '/pathfindars-website/' : '/'),
-  build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
-  },
+  export default defineConfig({
+  base: '/',
+  plugins: [react()],
+
 })
