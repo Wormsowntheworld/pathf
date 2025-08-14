@@ -18,20 +18,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      # Set up Node (no caching since there's no package-lock.json yet)
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      # Install & build with npm
       - run: npm install
       - run: npm run build
-
-      # SPA fallback so subroutes work on refresh
       - run: cp dist/index.html dist/404.html
-
-      # Upload the built site
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
