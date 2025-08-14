@@ -1,0 +1,106 @@
+name: Deploy Pathfindars Website to GitHub Pages
+
+# Trigger deployment on push to main branch or manual trigger
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:  # Allows manual triggering from GitHub web UI
+
+# Set permissions for GitHub Pages deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Prevent concurrent deployments
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy Website
+    runs-on: ubuntu-latest
+    
+    steps:
+    # Step 1: Checkout the repository code
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Fetch full history for better caching
+
+    # Step 2: Setup Node.js environment
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        registry-url: 'https://registry.npmjs.org'
+
+    # Step 3: Install pnpm package manager
+    - name: 📦 Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 8
+        run_install: false
+
+    # Step 4: Get pnpm store directory for caching
+    - name: 🗂️ Get pnpm store directory
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+    # Step 5: Setup pnpm cache for faster builds
+    - name: ⚡ Setup pnpm cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    # Step 6: Install all dependencies
+    - name: 🔧 Install Dependencies
+      run: |
+        echo "Installing dependencies with pnpm..."
+        pnpm install --frozen-lockfile --prefer-frozen-lockfile
+        echo "✅ Dependencies installed successfully"
+
+    # Step 7: Build the website for production
+    - name: 🏗️ Build Website
+      run: |
+        echo "Building website for production..."
+        pnpm run build
+        echo "✅ Website built successfully"
+      env:
+        NODE_ENV: production
+        CUSTOM_DOMAIN: true
+
+    # Step 8: List build output for debugging
+    - name: 📋 Verify Build Output
+      run: |
+        echo "Build output contents:"
+        ls -la dist/
+        echo "✅ Build verification complete"
+
+    # Step 9: Setup GitHub Pages
+    - name: 🌐 Setup GitHub Pages
+      uses: actions/configure-pages@v4
+
+    # Step 10: Upload build artifacts
+    - name: 📤 Upload Build Artifacts
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: './dist'
+
+    # Step 11: Deploy to GitHub Pages
+    - name: 🚀 Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+
+    # Step 12: Output deployment URL
+    - name: 🎉 Deployment Complete
+      run: |
+        echo "🎉 Deployment successful!"
+        echo "🌐 Your website is now live!"
+        echo "📍 URL: ${{ steps.deployment.outputs.page_url }}"
