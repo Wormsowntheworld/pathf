@@ -19,17 +19,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Node + npm cache
+      # Set up Node (no caching since there's no package-lock.json yet)
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
 
-      # Install & build with npm (no pnpm)
+      # Install & build with npm
       - run: npm install
       - run: npm run build
 
-      # SPA fallback so client-side routes work on refresh (/ourservices, /blog, etc.)
+      # SPA fallback so subroutes work on refresh
       - run: cp dist/index.html dist/404.html
 
       # Upload the built site
